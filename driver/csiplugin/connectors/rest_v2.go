@@ -25,8 +25,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/IBM/ibm-spectrum-scale-csi/driver/csiplugin/settings"
-	"github.com/IBM/ibm-spectrum-scale-csi/driver/csiplugin/utils"
+	"github.com/YiannisGkoufas/ibm-spectrum-scale-csi/driver/csiplugin/settings"
+	"github.com/YiannisGkoufas/ibm-spectrum-scale-csi/driver/csiplugin/utils"
 	"github.com/golang/glog"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
