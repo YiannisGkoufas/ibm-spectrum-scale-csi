@@ -577,6 +577,12 @@ type UnmountFilesystemRequest struct {
 	Force bool     `json:"force,omitempty"`
 }
 
+type CreateBucketKeysRequest struct {
+	Bucket string `json:"bucket"`
+	AccessKey string `json:"accessKey"`
+	SecretKey string `json:"secretKey"`
+}
+
 const (
 	UserSpecifiedUID string = "uid"
 	UserSpecifiedGID string = "gid"

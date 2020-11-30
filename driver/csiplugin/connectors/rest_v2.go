@@ -850,3 +850,38 @@ func (s *spectrumRestV2) CreateSymLink(SlnkfilesystemName string, TargetFs strin
 	}
 	return err
 }
+
+func (s *spectrumRestV2) CreateBucketKeys(bucket string, accessKey string, secretAccessKey string) error {
+	glog.V(4).Infof("rest_v2 CreateBucketKeys. bucket: %s", bucket)
+
+	creteBucketRequest := CreateBucketKeysRequest{
+		Bucket:    bucket,
+		AccessKey: accessKey,
+		SecretKey: secretAccessKey,
+	}
+
+	createBucketKeysURL := utils.FormatURL(s.endpoint, fmt.Sprintf("scalemgmt/v2/bucket/keys"))
+
+	createBucketKeysResponse := GenericResponse{}
+
+	err := s.doHTTP(createBucketKeysURL, "PUT", &createBucketKeysResponse, creteBucketRequest)
+
+	if err != nil {
+		glog.Errorf("Error in creating keys for bucket: %v", err)
+		return err
+	}
+
+	err = s.isRequestAccepted(createBucketKeysResponse, createBucketKeysURL)
+	if err != nil {
+		glog.Errorf("Request not accepted for processing: %v", err)
+		return err
+	}
+
+	err = s.waitForJobCompletion(createBucketKeysResponse.Status.Code, createBucketKeysResponse.Jobs[0].JobID)
+	if err != nil {
+		glog.Errorf("Error in job for creating keys for bucket %s: %v.", bucket, err)
+		return err
+	}
+
+	return nil
+}
