@@ -2,7 +2,7 @@
 # usage: docker buildx build -f build/multi-arch.Dockerfile --platform=linux/amd64 -t my_image_tag .
 
 FROM --platform=$BUILDPLATFORM golang:1.15.2 AS builder
-WORKDIR /go/src/github.com/IBM/ibm-spectrum-scale-csi/driver/
+WORKDIR /go/src/github.com/YiannisGkoufas/ibm-spectrum-scale-csi/driver/
 COPY ./go.mod .
 COPY ./go.sum .
 RUN go mod download
@@ -25,5 +25,5 @@ LABEL name="IBM Spectrum Scale CSI driver" \
       description="CSI Plugin for IBM Spectrum Scale"\
       maintainers="IBM Spectrum Scale"
 COPY licenses /licenses
-COPY --from=builder /go/src/github.com/IBM/ibm-spectrum-scale-csi/driver/_output/ibm-spectrum-scale-csi /ibm-spectrum-scale-csi
+COPY --from=builder /go/src/github.com/YiannisGkoufas/ibm-spectrum-scale-csi/driver/_output/ibm-spectrum-scale-csi /ibm-spectrum-scale-csi
 ENTRYPOINT ["/ibm-spectrum-scale-csi"]

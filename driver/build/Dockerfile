@@ -2,7 +2,7 @@
 # usage: docker build -f build/Dockerfile -t my_image_tag .
 
 FROM golang:1.15.2 AS builder
-WORKDIR /go/src/github.com/IBM/ibm-spectrum-scale-csi/driver/
+WORKDIR /go/src/github.com/YiannisGkoufas/ibm-spectrum-scale-csi/driver/
 COPY ./go.mod .
 COPY ./go.sum .
 RUN go mod download
@@ -26,5 +26,5 @@ LABEL name="IBM Spectrum Scale CSI driver" \
       git_commit=$GIT_COMMIT
 
 COPY licenses /licenses
-COPY --from=builder /go/src/github.com/IBM/ibm-spectrum-scale-csi/driver/_output/ibm-spectrum-scale-csi /ibm-spectrum-scale-csi
+COPY --from=builder /go/src/github.com/YiannisGkoufas/ibm-spectrum-scale-csi/driver/_output/ibm-spectrum-scale-csi /ibm-spectrum-scale-csi
 ENTRYPOINT ["/ibm-spectrum-scale-csi"]
