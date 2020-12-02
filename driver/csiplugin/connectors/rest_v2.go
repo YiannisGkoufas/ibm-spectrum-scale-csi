@@ -854,7 +854,7 @@ func (s *spectrumRestV2) CreateSymLink(SlnkfilesystemName string, TargetFs strin
 func (s *spectrumRestV2) CreateBucketKeys(bucket string, accessKey string, secretAccessKey string) error {
 	glog.V(4).Infof("rest_v2 CreateBucketKeys. bucket: %s", bucket)
 
-	creteBucketRequest := CreateBucketKeysRequest{
+	createBucketRequest := CreateBucketKeysRequest{
 		Bucket:    bucket,
 		AccessKey: accessKey,
 		SecretKey: secretAccessKey,
@@ -864,7 +864,7 @@ func (s *spectrumRestV2) CreateBucketKeys(bucket string, accessKey string, secre
 
 	createBucketKeysResponse := GenericResponse{}
 
-	err := s.doHTTP(createBucketKeysURL, "PUT", &createBucketKeysResponse, creteBucketRequest)
+	err := s.doHTTP(createBucketKeysURL, "PUT", &createBucketKeysResponse, createBucketRequest)
 
 	if err != nil {
 		glog.Errorf("Error in creating keys for bucket: %v", err)
@@ -880,6 +880,44 @@ func (s *spectrumRestV2) CreateBucketKeys(bucket string, accessKey string, secre
 	err = s.waitForJobCompletion(createBucketKeysResponse.Status.Code, createBucketKeysResponse.Jobs[0].JobID)
 	if err != nil {
 		glog.Errorf("Error in job for creating keys for bucket %s: %v.", bucket, err)
+		return err
+	}
+
+	return nil
+}
+
+func (s *spectrumRestV2) CreateCOSFileset(filesystem string, filesetName string, endpoint string, bucket string, useObjectFs bool, mode string, useXattr bool) error {
+	glog.V(4).Infof("rest_v2  CreateCOSFileset. bucket: %s", bucket)
+
+	createCOSFilesetRequest := CreateCOSFilesetRequest{
+		FilesetName: filesetName,
+		Endpoint:    endpoint,
+		UseObjectFs: useObjectFs,
+		Bucket:      bucket,
+		Mode:        mode,
+		UseXattr:    useXattr,
+	}
+
+	createCOSFilesetRequestURL := utils.FormatURL(s.endpoint, fmt.Sprintf("scalemgmt/v2/filesystems/%s/filesets/cos", filesystem))
+
+	createCOSFilesetResponse := GenericResponse{}
+
+	err := s.doHTTP(createCOSFilesetRequestURL, "POST", &createCOSFilesetResponse, createCOSFilesetRequest)
+
+	if err != nil {
+		glog.Errorf("Error in creating COS Fileset: %v", err)
+		return err
+	}
+
+	err = s.isRequestAccepted(createCOSFilesetResponse, createCOSFilesetRequestURL)
+	if err != nil {
+		glog.Errorf("Request not accepted for processing: %v", err)
+		return err
+	}
+
+	err = s.waitForJobCompletion(createCOSFilesetResponse.Status.Code, createCOSFilesetResponse.Jobs[0].JobID)
+	if err != nil {
+		glog.Errorf("Error in job for creating COS Fileset of bucket %s: %v.", bucket, err)
 		return err
 	}
 

@@ -583,6 +583,33 @@ type CreateBucketKeysRequest struct {
 	SecretKey string `json:"secretKey"`
 }
 
+type CreateCOSFilesetRequest struct {
+	FilesetName string `json:"filesetName"`
+    Endpoint string `json:"endpoint"`
+	UseObjectFs bool `json:"useObjectFs,omitempty"`
+	Bucket string `json:"bucket,omitempty"`
+	NewBucket string `json:"newBucket,omitempty"`
+	Dir string `json:"dir,omitempty"`
+	Policy []string `json:"policy,omitempty"`
+	TmpDir string `json:"tmpDir,omitempty"`
+	TmpFile string `json:"tmpFile,omitempty"`
+	QuotaFiles int `json:"quotaFiles,omitempty"`
+	QuotaBlocks int `json:"quotaBlocks,omitempty"`
+	Uid string `json:"uid,omitempty"`
+	Gid string `json:"gid,omitempty"`
+	Permission string `json:"permission,omitempty"`
+	Mode string `json:"mode,omitempty"`
+	UseUserKeys bool `json:"useUserKeys,omitempty"`
+	ChunkSize  int `json:"chunkSize,omitempty"`
+	ReadSize  int `json:"readSize,omitempty"`
+	UseXattr  bool `json:"useXattr,omitempty"`
+	UseSslCertVerify  bool `json:"useSslCertVerify,omitempty"`
+	UseVhb  bool `json:"useVhb,omitempty"`
+	UseGcs  bool `json:"useGcs,omitempty"`
+	AccessKey string `json:"accessKey,omitempty"`
+	SecretKey string `json:"secretKey,omitempty"`
+}
+
 const (
 	UserSpecifiedUID string = "uid"
 	UserSpecifiedGID string = "gid"
