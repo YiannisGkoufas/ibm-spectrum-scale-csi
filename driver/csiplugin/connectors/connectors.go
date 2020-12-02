@@ -58,6 +58,7 @@ type SpectrumScaleConnector interface {
 	GetFileSetNameFromId(filesystemName string, Id string) (string, error)
 	DeleteSymLnk(filesystemName string, LnkName string) error
 	CreateBucketKeys(bucket string, accessKey string, secretAccessKey string) error
+	CreateCOSFileset(filesystem string, filesetName string, endpoint string, bucket string, useObjectFs bool, mode string, useXattr bool) error
 }
 
 const (
